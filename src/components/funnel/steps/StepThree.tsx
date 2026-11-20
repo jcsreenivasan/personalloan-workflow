@@ -8,12 +8,12 @@ interface StepThreeProps {
   onNext: () => void;
 }
 
-const EMPLOYMENT_OPTIONS: { value: EmploymentStatus; label: string; icon: string }[] = [
-  { value: 'full-time',     label: 'Full Time',     icon: '💼' },
-  { value: 'part-time',     label: 'Part Time',     icon: '⏰' },
-  { value: 'self-employed', label: 'Self Employed', icon: '🏢' },
-  { value: 'unemployed',    label: 'Unemployed',    icon: '🔍' },
-  { value: 'other',         label: 'Other',         icon: '📋' },
+const EMPLOYMENT_OPTIONS: { value: EmploymentStatus; label: string }[] = [
+  { value: 'full-time',     label: 'Full Time'     },
+  { value: 'part-time',     label: 'Part Time'     },
+  { value: 'self-employed', label: 'Self Employed' },
+  { value: 'unemployed',    label: 'Unemployed'    },
+  { value: 'other',         label: 'Other'         },
 ];
 
 function QLabel({ n }: { n: number }) {
@@ -68,7 +68,6 @@ export function StepThree({ data, onChange, onNext }: StepThreeProps) {
                     <Check size={9} className="text-white" strokeWidth={3} />
                   </motion.div>
                 )}
-                <span className="text-xl">{opt.icon}</span>
                 <span className="text-sm font-bold text-gray-900">{opt.label}</span>
               </motion.button>
             );

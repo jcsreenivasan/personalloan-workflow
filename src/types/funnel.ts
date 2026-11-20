@@ -51,8 +51,8 @@ export const STEP_ORDER: FunnelStep[] = [
   'step2',
   'step3',
   'step4',
-  'lead-capture',
   'loading',
+  'lead-capture',
   'rates',
 ];
 
