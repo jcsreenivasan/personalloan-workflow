@@ -8,11 +8,11 @@ interface StepOneProps {
   onNext: () => void;
 }
 
-const LOAN_PURPOSES: { value: LoanPurpose; label: string; icon: string }[] = [
-  { value: 'debt-consolidation', label: 'Debt Consolidation', icon: '💳' },
-  { value: 'home-improvement',   label: 'Home Improvement',   icon: '🏠' },
-  { value: 'personal-use',       label: 'Personal Use',       icon: '💼' },
-  { value: 'other',              label: 'Other',              icon: '📋' },
+const LOAN_PURPOSES: { value: LoanPurpose; label: string; img: string }[] = [
+  { value: 'debt-consolidation', label: 'Debt Consolidation', img: '/debt-consolidation.png' },
+  { value: 'home-improvement',   label: 'Home Improvement',   img: '/home-improvement.png'   },
+  { value: 'personal-use',       label: 'Personal Use',       img: '/personal-use.png'       },
+  { value: 'other',              label: 'Other',              img: '/other.png'              },
 ];
 
 function QLabel({ n }: { n: number }) {
@@ -95,7 +95,7 @@ export function StepOne({ data, onChange, onNext }: StepOneProps) {
                     <Check size={9} className="text-white" strokeWidth={3} />
                   </motion.div>
                 )}
-                <span className="text-xl">{lp.icon}</span>
+                <img src={lp.img} alt={lp.label} className="w-10 h-10 object-contain flex-shrink-0" />
                 <span className="text-sm font-bold text-gray-900 text-left">{lp.label}</span>
               </motion.button>
             );
