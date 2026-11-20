@@ -8,9 +8,9 @@ interface StepTwoProps {
   onNext: () => void;
 }
 
-const HOUSING_OPTIONS: { value: HousingStatus; label: string; desc: string; icon: string }[] = [
-  { value: 'rent', label: 'I Rent',     desc: 'Renting from a landlord',    icon: '🏢' },
-  { value: 'own',  label: 'I Own',      desc: 'Own my home outright or w/ mortgage', icon: '🏡' },
+const HOUSING_OPTIONS: { value: HousingStatus; label: string; desc: string; img: string }[] = [
+  { value: 'rent', label: 'I Rent', desc: 'Renting from a landlord',              img: '/rent-home.png' },
+  { value: 'own',  label: 'I Own',  desc: 'Own my home outright or w/ mortgage',  img: '/own-home.png'  },
 ];
 
 const BANDS = [
@@ -130,7 +130,7 @@ export function StepTwo({ data, onChange, onNext }: StepTwoProps) {
                     <Check size={9} className="text-white" strokeWidth={3} />
                   </motion.div>
                 )}
-                <span className="text-3xl">{opt.icon}</span>
+                <img src={opt.img} alt={opt.label} className="w-12 h-12 object-contain" />
                 <div className="text-center">
                   <p className="text-sm font-bold text-gray-900">{opt.label}</p>
                   <p className="text-[11px] text-gray-500 mt-0.5 leading-snug">{opt.desc}</p>
