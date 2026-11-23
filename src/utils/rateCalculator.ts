@@ -9,12 +9,12 @@ function scoreToBand(score: number): CreditBand {
   return 'poor';
 }
 
-function personalLoanRates(band: CreditBand): { primary: number; secondary: number } {
-  const map: Record<CreditBand, { primary: number; secondary: number }> = {
-    excellent: { primary: 7.99,  secondary: 9.99  },
-    good:      { primary: 11.99, secondary: 13.99 },
-    fair:      { primary: 15.99, secondary: 17.99 },
-    poor:      { primary: 20.99, secondary: 24.99 },
+function baseRate(band: CreditBand): number {
+  const map: Record<CreditBand, number> = {
+    excellent: 7.24,
+    good:      10.24,
+    fair:      14.24,
+    poor:      19.24,
   };
   return map[band];
 }
@@ -25,6 +25,14 @@ function calcMonthlyPayment(principal: number, annualRate: number, termMonths: n
   return (principal * r * Math.pow(1 + r, termMonths)) / (Math.pow(1 + r, termMonths) - 1);
 }
 
+const TERMS = [
+  { months: 12, label: '1 year',  years: 1 },
+  { months: 24, label: '2 years', years: 2 },
+  { months: 36, label: '3 years', years: 3 },
+  { months: 48, label: '4 years', years: 4 },
+  { months: 60, label: '5 years', years: 5 },
+];
+
 export interface RateCalculationResult {
   rates: RateData[];
   loanAmount: number;
@@ -32,39 +40,26 @@ export interface RateCalculationResult {
 
 export function calculateRates(data: FunnelData): RateCalculationResult {
   const band = scoreToBand(data.creditScore);
-  const rates = personalLoanRates(band);
+  const base = baseRate(band);
   const loanAmount = data.loanAmount;
-  const primaryTerm = 36;
-  const secondaryTerm = 60;
 
-  const primaryMonthly = calcMonthlyPayment(loanAmount, rates.primary, primaryTerm);
-  const secondaryMonthly = calcMonthlyPayment(loanAmount, rates.secondary, secondaryTerm);
+  const rates: RateData[] = TERMS.map((term, i) => {
+    const interestRate = +(base + i * 1.0).toFixed(2);
+    const apr = +(interestRate + 0.25).toFixed(2);
+    const monthlyPayment = calcMonthlyPayment(loanAmount, interestRate, term.months);
 
-  return {
-    loanAmount,
-    rates: [
-      {
-        label: `Personal Loan · ${primaryTerm} months`,
-        badge: 'Best Rate',
-        interestRate: rates.primary,
-        apr: rates.primary + 0.1,
-        monthlyPayment: primaryMonthly,
-        loanAmount,
-        termMonths: primaryTerm,
-        totalInterest: primaryMonthly * primaryTerm - loanAmount,
-      },
-      {
-        label: `Personal Loan · ${secondaryTerm} months`,
-        badge: 'Lower Payment',
-        interestRate: rates.secondary,
-        apr: rates.secondary + 0.1,
-        monthlyPayment: secondaryMonthly,
-        loanAmount,
-        termMonths: secondaryTerm,
-        totalInterest: secondaryMonthly * secondaryTerm - loanAmount,
-      },
-    ],
-  };
+    return {
+      label: term.label,
+      interestRate,
+      apr,
+      monthlyPayment,
+      loanAmount,
+      termMonths: term.months,
+      totalInterest: monthlyPayment * term.months - loanAmount,
+    };
+  });
+
+  return { loanAmount, rates };
 }
 
 export function creditScoreLabel(score: number): string {
@@ -74,6 +69,17 @@ export function creditScoreLabel(score: number): string {
     good:      `Good (${score})`,
     fair:      `Fair (${score})`,
     poor:      `Poor (${score})`,
+  };
+  return labels[band];
+}
+
+export function creditScoreBandLabel(score: number): string {
+  const band = scoreToBand(score);
+  const labels: Record<CreditBand, string> = {
+    excellent: 'Excellent (720+)',
+    good:      'Good (680+)',
+    fair:      'Fair (620+)',
+    poor:      'Below 620',
   };
   return labels[band];
 }
