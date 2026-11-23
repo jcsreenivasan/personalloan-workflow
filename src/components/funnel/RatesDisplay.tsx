@@ -95,20 +95,20 @@ function RateRow({ rate, index }: { rate: RateData; index: number }) {
           <p className="text-xs text-gray-400 mt-0.5">Rate/APR</p>
         </div>
         <div>
-          <p className="text-lg text-[#1E3569] leading-tight">
+          <p className="text-base text-[#1E3569] leading-tight">
             {fmtCurrency(rate.loanAmount)}
           </p>
           <p className="text-xs text-gray-400 mt-0.5">Loan amount</p>
         </div>
         <div>
-          <p className="text-lg text-[#1E3569] leading-tight">
+          <p className="text-base text-[#1E3569] leading-tight">
             {fmtCurrency(rate.monthlyPayment)}/mo{' '}
             <Info size={13} className="inline text-gray-300 -mt-0.5" />
           </p>
           <p className="text-xs text-gray-400 mt-0.5">Est. payment</p>
         </div>
         <div>
-          <p className="text-lg text-[#1E3569] leading-tight">{rate.label}</p>
+          <p className="text-base text-[#1E3569] leading-tight">{rate.label}</p>
           <p className="text-xs text-gray-400 mt-0.5">Term</p>
         </div>
       </div>
